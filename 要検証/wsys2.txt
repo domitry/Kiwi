@@ -1,0 +1,471 @@
+
+wsys.o:     file format elf32-i386
+
+
+Disassembly of section .text:
+
+00000000 <setLayer>:
+   0:	53                   	push   %ebx
+   1:	8b 44 24 08          	mov    0x8(%esp),%eax
+   5:	8b 4c 24 1c          	mov    0x1c(%esp),%ecx
+   9:	85 c0                	test   %eax,%eax
+   b:	78 31                	js     3e <setLayer+0x3e>
+   d:	6b c0 1c             	imul   $0x1c,%eax,%eax
+  10:	8b 5c 24 0c          	mov    0xc(%esp),%ebx
+  14:	89 98 10 00 00 00    	mov    %ebx,0x10(%eax)
+  1a:	8b 5c 24 10          	mov    0x10(%esp),%ebx
+  1e:	88 88 20 00 00 00    	mov    %cl,0x20(%eax)
+  24:	89 98 14 00 00 00    	mov    %ebx,0x14(%eax)
+  2a:	8b 5c 24 14          	mov    0x14(%esp),%ebx
+  2e:	89 98 18 00 00 00    	mov    %ebx,0x18(%eax)
+  34:	8b 5c 24 18          	mov    0x18(%esp),%ebx
+  38:	89 98 1c 00 00 00    	mov    %ebx,0x1c(%eax)
+  3e:	5b                   	pop    %ebx
+  3f:	c3                   	ret    
+
+00000040 <setContext>:
+  40:	6b 44 24 04 1c       	imul   $0x1c,0x4(%esp),%eax
+  45:	8b 54 24 08          	mov    0x8(%esp),%edx
+  49:	c6 80 28 00 00 00 01 	movb   $0x1,0x28(%eax)
+  50:	89 90 24 00 00 00    	mov    %edx,0x24(%eax)
+  56:	c3                   	ret    
+  57:	89 f6                	mov    %esi,%esi
+  59:	8d bc 27 00 00 00 00 	lea    0x0(%edi,%eiz,1),%edi
+
+00000060 <newWindow>:
+  60:	8b 44 24 08          	mov    0x8(%esp),%eax
+  64:	c7 05 2c 00 00 00 64 	movl   $0x64,0x2c
+  6b:	00 00 00 
+  6e:	c7 05 30 00 00 00 c8 	movl   $0xc8,0x30
+  75:	00 00 00 
+  78:	c6 05 3c 00 00 00 03 	movb   $0x3,0x3c
+  7f:	a3 34 00 00 00       	mov    %eax,0x34
+  84:	8b 44 24 0c          	mov    0xc(%esp),%eax
+  88:	c6 05 44 00 00 00 01 	movb   $0x1,0x44
+  8f:	a3 38 00 00 00       	mov    %eax,0x38
+  94:	8b 44 24 04          	mov    0x4(%esp),%eax
+  98:	a3 40 00 00 00       	mov    %eax,0x40
+  9d:	c3                   	ret    
+  9e:	66 90                	xchg   %ax,%ax
+
+000000a0 <switchLayer>:
+  a0:	f3 c3                	repz ret 
+  a2:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
+  a9:	8d bc 27 00 00 00 00 	lea    0x0(%edi,%eiz,1),%edi
+
+000000b0 <moveLayer>:
+  b0:	f3 c3                	repz ret 
+  b2:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
+  b9:	8d bc 27 00 00 00 00 	lea    0x0(%edi,%eiz,1),%edi
+
+000000c0 <moveCursor>:
+  c0:	83 ec 2c             	sub    $0x2c,%esp
+  c3:	8d 44 24 14          	lea    0x14(%esp),%eax
+  c7:	89 04 24             	mov    %eax,(%esp)
+  ca:	e8 fc ff ff ff       	call   cb <moveCursor+0xb>
+  cf:	31 d2                	xor    %edx,%edx
+  d1:	83 ec 04             	sub    $0x4,%esp
+  d4:	8b 4c 24 14          	mov    0x14(%esp),%ecx
+  d8:	8b 44 24 18          	mov    0x18(%esp),%eax
+  dc:	03 05 14 00 00 00    	add    0x14,%eax
+  e2:	03 0d 10 00 00 00    	add    0x10,%ecx
+  e8:	78 0e                	js     f8 <moveCursor+0x38>
+  ea:	8b 15 2c 02 00 00    	mov    0x22c,%edx
+  f0:	83 ea 20             	sub    $0x20,%edx
+  f3:	39 d1                	cmp    %edx,%ecx
+  f5:	0f 46 d1             	cmovbe %ecx,%edx
+  f8:	85 c0                	test   %eax,%eax
+  fa:	78 24                	js     120 <moveCursor+0x60>
+  fc:	8b 0d 30 02 00 00    	mov    0x230,%ecx
+ 102:	89 15 10 00 00 00    	mov    %edx,0x10
+ 108:	83 e9 20             	sub    $0x20,%ecx
+ 10b:	39 c8                	cmp    %ecx,%eax
+ 10d:	0f 46 c8             	cmovbe %eax,%ecx
+ 110:	89 0d 14 00 00 00    	mov    %ecx,0x14
+ 116:	83 c4 2c             	add    $0x2c,%esp
+ 119:	c3                   	ret    
+ 11a:	8d b6 00 00 00 00    	lea    0x0(%esi),%esi
+ 120:	31 c9                	xor    %ecx,%ecx
+ 122:	89 15 10 00 00 00    	mov    %edx,0x10
+ 128:	89 0d 14 00 00 00    	mov    %ecx,0x14
+ 12e:	83 c4 2c             	add    $0x2c,%esp
+ 131:	c3                   	ret    
+ 132:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
+ 139:	8d bc 27 00 00 00 00 	lea    0x0(%edi,%eiz,1),%edi
+
+00000140 <drawCursor>:
+ 140:	83 ec 3c             	sub    $0x3c,%esp
+ 143:	c6 44 24 2d 7d       	movb   $0x7d,0x2d(%esp)
+ 148:	c6 44 24 2e 00       	movb   $0x0,0x2e(%esp)
+ 14d:	0f b7 44 24 2d       	movzwl 0x2d(%esp),%eax
+ 152:	c6 44 24 16 9c       	movb   $0x9c,0x16(%esp)
+ 157:	c7 44 24 10 20 00 00 	movl   $0x20,0x10(%esp)
+ 15e:	00 
+ 15f:	c7 44 24 0c 20 00 00 	movl   $0x20,0xc(%esp)
+ 166:	00 
+ 167:	66 89 44 24 14       	mov    %ax,0x14(%esp)
+ 16c:	a1 14 00 00 00       	mov    0x14,%eax
+ 171:	89 44 24 08          	mov    %eax,0x8(%esp)
+ 175:	a1 10 00 00 00       	mov    0x10,%eax
+ 17a:	89 44 24 04          	mov    %eax,0x4(%esp)
+ 17e:	a1 00 00 00 00       	mov    0x0,%eax
+ 183:	89 04 24             	mov    %eax,(%esp)
+ 186:	e8 fc ff ff ff       	call   187 <drawCursor+0x47>
+ 18b:	83 c4 3c             	add    $0x3c,%esp
+ 18e:	c3                   	ret    
+ 18f:	90                   	nop
+
+00000190 <drawBack>:
+ 190:	83 ec 3c             	sub    $0x3c,%esp
+ 193:	c6 44 24 2a 00       	movb   $0x0,0x2a(%esp)
+ 198:	c6 44 24 2b bf       	movb   $0xbf,0x2b(%esp)
+ 19d:	0f b7 44 24 2a       	movzwl 0x2a(%esp),%eax
+ 1a2:	c6 44 24 2d 00       	movb   $0x0,0x2d(%esp)
+ 1a7:	c6 44 24 2e 00       	movb   $0x0,0x2e(%esp)
+ 1ac:	c6 44 24 2f 00       	movb   $0x0,0x2f(%esp)
+ 1b1:	66 89 44 24 10       	mov    %ax,0x10(%esp)
+ 1b6:	c6 44 24 12 00       	movb   $0x0,0x12(%esp)
+ 1bb:	c7 44 24 0c 00 03 00 	movl   $0x300,0xc(%esp)
+ 1c2:	00 
+ 1c3:	c7 44 24 08 00 04 00 	movl   $0x400,0x8(%esp)
+ 1ca:	00 
+ 1cb:	c7 44 24 04 00 00 00 	movl   $0x0,0x4(%esp)
+ 1d2:	00 
+ 1d3:	c7 04 24 00 00 00 00 	movl   $0x0,(%esp)
+ 1da:	e8 fc ff ff ff       	call   1db <drawBack+0x4b>
+ 1df:	a1 08 00 00 00       	mov    0x8,%eax
+ 1e4:	c7 44 24 10 a8 01 00 	movl   $0x1a8,0x10(%esp)
+ 1eb:	00 
+ 1ec:	c7 44 24 0c c2 03 00 	movl   $0x3c2,0xc(%esp)
+ 1f3:	00 
+ 1f4:	c7 44 24 08 58 01 00 	movl   $0x158,0x8(%esp)
+ 1fb:	00 
+ 1fc:	89 04 24             	mov    %eax,(%esp)
+ 1ff:	c7 44 24 04 1f 00 00 	movl   $0x1f,0x4(%esp)
+ 206:	00 
+ 207:	e8 fc ff ff ff       	call   208 <drawBack+0x78>
+ 20c:	0f b7 44 24 2d       	movzwl 0x2d(%esp),%eax
+ 211:	c7 44 24 0c 1e 00 00 	movl   $0x1e,0xc(%esp)
+ 218:	00 
+ 219:	c7 44 24 08 00 04 00 	movl   $0x400,0x8(%esp)
+ 220:	00 
+ 221:	c7 44 24 04 e2 02 00 	movl   $0x2e2,0x4(%esp)
+ 228:	00 
+ 229:	66 89 44 24 10       	mov    %ax,0x10(%esp)
+ 22e:	0f b6 44 24 2f       	movzbl 0x2f(%esp),%eax
+ 233:	c7 04 24 00 00 00 00 	movl   $0x0,(%esp)
+ 23a:	88 44 24 12          	mov    %al,0x12(%esp)
+ 23e:	e8 fc ff ff ff       	call   23f <drawBack+0xaf>
+ 243:	83 c4 3c             	add    $0x3c,%esp
+ 246:	c3                   	ret    
+ 247:	89 f6                	mov    %esi,%esi
+ 249:	8d bc 27 00 00 00 00 	lea    0x0(%edi,%eiz,1),%edi
+
+00000250 <drawWindow>:
+ 250:	55                   	push   %ebp
+ 251:	57                   	push   %edi
+ 252:	56                   	push   %esi
+ 253:	53                   	push   %ebx
+ 254:	83 ec 4c             	sub    $0x4c,%esp
+ 257:	8b 5c 24 60          	mov    0x60(%esp),%ebx
+ 25b:	8b 74 24 64          	mov    0x64(%esp),%esi
+ 25f:	8b 7c 24 68          	mov    0x68(%esp),%edi
+ 263:	c6 44 24 37 1a       	movb   $0x1a,0x37(%esp)
+ 268:	8b 6c 24 6c          	mov    0x6c(%esp),%ebp
+ 26c:	c6 44 24 38 1f       	movb   $0x1f,0x38(%esp)
+ 271:	0f b7 44 24 37       	movzwl 0x37(%esp),%eax
+ 276:	89 74 24 04          	mov    %esi,0x4(%esp)
+ 27a:	89 7c 24 08          	mov    %edi,0x8(%esp)
+ 27e:	89 1c 24             	mov    %ebx,(%esp)
+ 281:	66 89 44 24 10       	mov    %ax,0x10(%esp)
+ 286:	c6 44 24 39 1e       	movb   $0x1e,0x39(%esp)
+ 28b:	c6 44 24 3a 00       	movb   $0x0,0x3a(%esp)
+ 290:	c6 44 24 3b a2       	movb   $0xa2,0x3b(%esp)
+ 295:	c6 44 24 3c 00       	movb   $0x0,0x3c(%esp)
+ 29a:	c6 44 24 3d 34       	movb   $0x34,0x3d(%esp)
+ 29f:	c6 44 24 3e 38       	movb   $0x38,0x3e(%esp)
+ 2a4:	c6 44 24 3f 38       	movb   $0x38,0x3f(%esp)
+ 2a9:	c6 44 24 12 1e       	movb   $0x1e,0x12(%esp)
+ 2ae:	c7 44 24 0c 18 00 00 	movl   $0x18,0xc(%esp)
+ 2b5:	00 
+ 2b6:	e8 fc ff ff ff       	call   2b7 <drawWindow+0x67>
+ 2bb:	8d 04 1f             	lea    (%edi,%ebx,1),%eax
+ 2be:	89 c2                	mov    %eax,%edx
+ 2c0:	83 ea 6e             	sub    $0x6e,%edx
+ 2c3:	89 54 24 04          	mov    %edx,0x4(%esp)
+ 2c7:	8b 15 04 00 00 00    	mov    0x4,%edx
+ 2cd:	89 74 24 08          	mov    %esi,0x8(%esp)
+ 2d1:	c7 44 24 10 16 00 00 	movl   $0x16,0x10(%esp)
+ 2d8:	00 
+ 2d9:	c7 44 24 0c 6e 00 00 	movl   $0x6e,0xc(%esp)
+ 2e0:	00 
+ 2e1:	89 14 24             	mov    %edx,(%esp)
+ 2e4:	89 44 24 20          	mov    %eax,0x20(%esp)
+ 2e8:	e8 fc ff ff ff       	call   2e9 <drawWindow+0x99>
+ 2ed:	0f b7 54 24 3a       	movzwl 0x3a(%esp),%edx
+ 2f2:	89 7c 24 08          	mov    %edi,0x8(%esp)
+ 2f6:	89 1c 24             	mov    %ebx,(%esp)
+ 2f9:	c7 44 24 0c 02 00 00 	movl   $0x2,0xc(%esp)
+ 300:	00 
+ 301:	66 89 54 24 10       	mov    %dx,0x10(%esp)
+ 306:	0f b6 54 24 3c       	movzbl 0x3c(%esp),%edx
+ 30b:	88 54 24 12          	mov    %dl,0x12(%esp)
+ 30f:	8d 56 18             	lea    0x18(%esi),%edx
+ 312:	89 54 24 04          	mov    %edx,0x4(%esp)
+ 316:	e8 fc ff ff ff       	call   317 <drawWindow+0xc7>
+ 31b:	0f b7 44 24 37       	movzwl 0x37(%esp),%eax
+ 320:	8d 4d ea             	lea    -0x16(%ebp),%ecx
+ 323:	8d 56 16             	lea    0x16(%esi),%edx
+ 326:	89 4c 24 0c          	mov    %ecx,0xc(%esp)
+ 32a:	89 54 24 04          	mov    %edx,0x4(%esp)
+ 32e:	66 89 44 24 10       	mov    %ax,0x10(%esp)
+ 333:	0f b6 44 24 39       	movzbl 0x39(%esp),%eax
+ 338:	89 1c 24             	mov    %ebx,(%esp)
+ 33b:	89 54 24 28          	mov    %edx,0x28(%esp)
+ 33f:	89 4c 24 2c          	mov    %ecx,0x2c(%esp)
+ 343:	88 44 24 12          	mov    %al,0x12(%esp)
+ 347:	c7 44 24 08 02 00 00 	movl   $0x2,0x8(%esp)
+ 34e:	00 
+ 34f:	e8 fc ff ff ff       	call   350 <drawWindow+0x100>
+ 354:	0f b7 44 24 37       	movzwl 0x37(%esp),%eax
+ 359:	8b 4c 24 2c          	mov    0x2c(%esp),%ecx
+ 35d:	8b 54 24 28          	mov    0x28(%esp),%edx
+ 361:	c7 44 24 08 02 00 00 	movl   $0x2,0x8(%esp)
+ 368:	00 
+ 369:	66 89 44 24 10       	mov    %ax,0x10(%esp)
+ 36e:	0f b6 44 24 39       	movzbl 0x39(%esp),%eax
+ 373:	89 4c 24 0c          	mov    %ecx,0xc(%esp)
+ 377:	89 54 24 04          	mov    %edx,0x4(%esp)
+ 37b:	88 44 24 12          	mov    %al,0x12(%esp)
+ 37f:	8b 44 24 20          	mov    0x20(%esp),%eax
+ 383:	83 e8 02             	sub    $0x2,%eax
+ 386:	89 04 24             	mov    %eax,(%esp)
+ 389:	e8 fc ff ff ff       	call   38a <drawWindow+0x13a>
+ 38e:	0f b7 44 24 37       	movzwl 0x37(%esp),%eax
+ 393:	89 7c 24 08          	mov    %edi,0x8(%esp)
+ 397:	83 ef 04             	sub    $0x4,%edi
+ 39a:	89 1c 24             	mov    %ebx,(%esp)
+ 39d:	83 c3 02             	add    $0x2,%ebx
+ 3a0:	c7 44 24 0c 02 00 00 	movl   $0x2,0xc(%esp)
+ 3a7:	00 
+ 3a8:	66 89 44 24 10       	mov    %ax,0x10(%esp)
+ 3ad:	0f b6 44 24 39       	movzbl 0x39(%esp),%eax
+ 3b2:	88 44 24 12          	mov    %al,0x12(%esp)
+ 3b6:	8d 44 2e fe          	lea    -0x2(%esi,%ebp,1),%eax
+ 3ba:	83 ed 1c             	sub    $0x1c,%ebp
+ 3bd:	89 44 24 04          	mov    %eax,0x4(%esp)
+ 3c1:	83 c6 1a             	add    $0x1a,%esi
+ 3c4:	e8 fc ff ff ff       	call   3c5 <drawWindow+0x175>
+ 3c9:	0f b7 44 24 3d       	movzwl 0x3d(%esp),%eax
+ 3ce:	89 6c 24 0c          	mov    %ebp,0xc(%esp)
+ 3d2:	89 7c 24 08          	mov    %edi,0x8(%esp)
+ 3d6:	89 74 24 04          	mov    %esi,0x4(%esp)
+ 3da:	66 89 44 24 10       	mov    %ax,0x10(%esp)
+ 3df:	0f b6 44 24 3f       	movzbl 0x3f(%esp),%eax
+ 3e4:	89 1c 24             	mov    %ebx,(%esp)
+ 3e7:	88 44 24 12          	mov    %al,0x12(%esp)
+ 3eb:	e8 fc ff ff ff       	call   3ec <drawWindow+0x19c>
+ 3f0:	83 c4 4c             	add    $0x4c,%esp
+ 3f3:	5b                   	pop    %ebx
+ 3f4:	5e                   	pop    %esi
+ 3f5:	5f                   	pop    %edi
+ 3f6:	5d                   	pop    %ebp
+ 3f7:	c3                   	ret    
+ 3f8:	90                   	nop
+ 3f9:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
+
+00000400 <updateContext>:
+ 400:	53                   	push   %ebx
+ 401:	83 ec 28             	sub    $0x28,%esp
+ 404:	8b 1d 2c 00 00 00    	mov    0x2c,%ebx
+ 40a:	80 3d 44 00 00 00 00 	cmpb   $0x0,0x44
+ 411:	8b 0d 30 00 00 00    	mov    0x30,%ecx
+ 417:	8b 15 34 00 00 00    	mov    0x34,%edx
+ 41d:	a1 38 00 00 00       	mov    0x38,%eax
+ 422:	74 14                	je     438 <updateContext+0x38>
+ 424:	89 1c 24             	mov    %ebx,(%esp)
+ 427:	89 4c 24 04          	mov    %ecx,0x4(%esp)
+ 42b:	89 54 24 08          	mov    %edx,0x8(%esp)
+ 42f:	89 44 24 0c          	mov    %eax,0xc(%esp)
+ 433:	e8 fc ff ff ff       	call   434 <updateContext+0x34>
+ 438:	83 c4 28             	add    $0x28,%esp
+ 43b:	5b                   	pop    %ebx
+ 43c:	c3                   	ret    
+ 43d:	8d 76 00             	lea    0x0(%esi),%esi
+
+00000440 <initWsys>:
+ 440:	83 ec 2c             	sub    $0x2c,%esp
+ 443:	8d 44 24 10          	lea    0x10(%esp),%eax
+ 447:	89 04 24             	mov    %eax,(%esp)
+ 44a:	e8 fc ff ff ff       	call   44b <initWsys+0xb>
+ 44f:	83 ec 04             	sub    $0x4,%esp
+ 452:	c7 04 24 00 00 00 00 	movl   $0x0,(%esp)
+ 459:	e8 fc ff ff ff       	call   45a <initWsys+0x1a>
+ 45e:	c7 04 24 0b 00 00 00 	movl   $0xb,(%esp)
+ 465:	a3 00 00 00 00       	mov    %eax,0x0
+ 46a:	e8 fc ff ff ff       	call   46b <initWsys+0x2b>
+ 46f:	c7 04 24 16 00 00 00 	movl   $0x16,(%esp)
+ 476:	a3 04 00 00 00       	mov    %eax,0x4
+ 47b:	e8 fc ff ff ff       	call   47c <initWsys+0x3c>
+ 480:	c7 04 24 1f 00 00 00 	movl   $0x1f,(%esp)
+ 487:	a3 08 00 00 00       	mov    %eax,0x8
+ 48c:	e8 fc ff ff ff       	call   48d <initWsys+0x4d>
+ 491:	c7 05 10 00 00 00 f4 	movl   $0x1f4,0x10
+ 498:	01 00 00 
+ 49b:	c7 05 14 00 00 00 2c 	movl   $0x12c,0x14
+ 4a2:	01 00 00 
+ 4a5:	c7 05 18 00 00 00 20 	movl   $0x20,0x18
+ 4ac:	00 00 00 
+ 4af:	c7 05 1c 00 00 00 20 	movl   $0x20,0x1c
+ 4b6:	00 00 00 
+ 4b9:	c6 05 20 00 00 00 01 	movb   $0x1,0x20
+ 4c0:	a3 0c 00 00 00       	mov    %eax,0xc
+ 4c5:	b8 2c 00 00 00       	mov    $0x2c,%eax
+ 4ca:	8d b6 00 00 00 00    	lea    0x0(%esi),%esi
+ 4d0:	c7 00 00 00 00 00    	movl   $0x0,(%eax)
+ 4d6:	c7 40 04 00 00 00 00 	movl   $0x0,0x4(%eax)
+ 4dd:	c7 40 08 00 00 00 00 	movl   $0x0,0x8(%eax)
+ 4e4:	c7 40 0c 00 00 00 00 	movl   $0x0,0xc(%eax)
+ 4eb:	c6 40 10 00          	movb   $0x0,0x10(%eax)
+ 4ef:	83 c0 1c             	add    $0x1c,%eax
+ 4f2:	3d 24 02 00 00       	cmp    $0x224,%eax
+ 4f7:	75 d7                	jne    4d0 <initWsys+0x90>
+ 4f9:	8b 44 24 14          	mov    0x14(%esp),%eax
+ 4fd:	c7 05 24 02 00 00 00 	movl   $0x0,0x224
+ 504:	00 00 00 
+ 507:	c7 05 28 02 00 00 00 	movl   $0x0,0x228
+ 50e:	00 00 00 
+ 511:	c6 05 34 02 00 00 02 	movb   $0x2,0x234
+ 518:	a3 2c 02 00 00       	mov    %eax,0x22c
+ 51d:	8b 44 24 18          	mov    0x18(%esp),%eax
+ 521:	a3 30 02 00 00       	mov    %eax,0x230
+ 526:	83 c4 2c             	add    $0x2c,%esp
+ 529:	c3                   	ret    
+ 52a:	8d b6 00 00 00 00    	lea    0x0(%esi),%esi
+
+00000530 <drawAlert>:
+ 530:	83 ec 3c             	sub    $0x3c,%esp
+ 533:	c6 44 24 2a ff       	movb   $0xff,0x2a(%esp)
+ 538:	c6 44 24 2b ff       	movb   $0xff,0x2b(%esp)
+ 53d:	0f b7 44 24 2a       	movzwl 0x2a(%esp),%eax
+ 542:	c6 44 24 2d 00       	movb   $0x0,0x2d(%esp)
+ 547:	c6 44 24 2e 00       	movb   $0x0,0x2e(%esp)
+ 54c:	c6 44 24 2f 00       	movb   $0x0,0x2f(%esp)
+ 551:	66 89 44 24 10       	mov    %ax,0x10(%esp)
+ 556:	c6 44 24 12 ff       	movb   $0xff,0x12(%esp)
+ 55b:	c7 44 24 0c 64 00 00 	movl   $0x64,0xc(%esp)
+ 562:	00 
+ 563:	c7 44 24 08 90 01 00 	movl   $0x190,0x8(%esp)
+ 56a:	00 
+ 56b:	c7 44 24 04 30 01 00 	movl   $0x130,0x4(%esp)
+ 572:	00 
+ 573:	c7 04 24 38 01 00 00 	movl   $0x138,(%esp)
+ 57a:	e8 fc ff ff ff       	call   57b <drawAlert+0x4b>
+ 57f:	0f b7 44 24 2d       	movzwl 0x2d(%esp),%eax
+ 584:	c7 44 24 0c 19 00 00 	movl   $0x19,0xc(%esp)
+ 58b:	00 
+ 58c:	c7 44 24 08 4a 01 00 	movl   $0x14a,0x8(%esp)
+ 593:	00 
+ 594:	c7 44 24 04 4e 01 00 	movl   $0x14e,0x4(%esp)
+ 59b:	00 
+ 59c:	66 89 44 24 10       	mov    %ax,0x10(%esp)
+ 5a1:	0f b6 44 24 2f       	movzbl 0x2f(%esp),%eax
+ 5a6:	c7 04 24 5b 01 00 00 	movl   $0x15b,(%esp)
+ 5ad:	88 44 24 12          	mov    %al,0x12(%esp)
+ 5b1:	e8 fc ff ff ff       	call   5b2 <drawAlert+0x82>
+ 5b6:	a1 0c 00 00 00       	mov    0xc,%eax
+ 5bb:	c7 44 24 10 4b 00 00 	movl   $0x4b,0x10(%esp)
+ 5c2:	00 
+ 5c3:	c7 44 24 0c 56 00 00 	movl   $0x56,0xc(%esp)
+ 5ca:	00 
+ 5cb:	c7 44 24 08 3a 01 00 	movl   $0x13a,0x8(%esp)
+ 5d2:	00 
+ 5d3:	89 04 24             	mov    %eax,(%esp)
+ 5d6:	c7 44 24 04 42 01 00 	movl   $0x142,0x4(%esp)
+ 5dd:	00 
+ 5de:	e8 fc ff ff ff       	call   5df <drawAlert+0xaf>
+ 5e3:	8b 44 24 40          	mov    0x40(%esp),%eax
+ 5e7:	c7 44 24 04 54 01 00 	movl   $0x154,0x4(%esp)
+ 5ee:	00 
+ 5ef:	c7 04 24 a4 01 00 00 	movl   $0x1a4,(%esp)
+ 5f6:	89 44 24 08          	mov    %eax,0x8(%esp)
+ 5fa:	e8 fc ff ff ff       	call   5fb <drawAlert+0xcb>
+ 5ff:	83 c4 3c             	add    $0x3c,%esp
+ 602:	c3                   	ret    
+ 603:	8d b6 00 00 00 00    	lea    0x0(%esi),%esi
+ 609:	8d bc 27 00 00 00 00 	lea    0x0(%edi,%eiz,1),%edi
+
+00000610 <proceed>:
+ 610:	83 ec 3c             	sub    $0x3c,%esp
+ 613:	a1 2c 02 00 00       	mov    0x22c,%eax
+ 618:	c7 44 24 20 c8 00 00 	movl   $0xc8,0x20(%esp)
+ 61f:	00 
+ 620:	c7 44 24 24 64 00 00 	movl   $0x64,0x24(%esp)
+ 627:	00 
+ 628:	c7 44 24 28 bc 02 00 	movl   $0x2bc,0x28(%esp)
+ 62f:	00 
+ 630:	89 44 24 08          	mov    %eax,0x8(%esp)
+ 634:	a1 30 02 00 00       	mov    0x230,%eax
+ 639:	c7 44 24 2c 90 01 00 	movl   $0x190,0x2c(%esp)
+ 640:	00 
+ 641:	c7 04 24 00 00 00 00 	movl   $0x0,(%esp)
+ 648:	c7 44 24 04 00 00 00 	movl   $0x0,0x4(%esp)
+ 64f:	00 
+ 650:	89 44 24 0c          	mov    %eax,0xc(%esp)
+ 654:	e8 fc ff ff ff       	call   655 <proceed+0x45>
+ 659:	8b 44 24 20          	mov    0x20(%esp),%eax
+ 65d:	89 04 24             	mov    %eax,(%esp)
+ 660:	8b 44 24 24          	mov    0x24(%esp),%eax
+ 664:	89 44 24 04          	mov    %eax,0x4(%esp)
+ 668:	8b 44 24 28          	mov    0x28(%esp),%eax
+ 66c:	89 44 24 08          	mov    %eax,0x8(%esp)
+ 670:	8b 44 24 2c          	mov    0x2c(%esp),%eax
+ 674:	89 44 24 0c          	mov    %eax,0xc(%esp)
+ 678:	e8 fc ff ff ff       	call   679 <proceed+0x69>
+ 67d:	c7 44 24 08 2b 00 00 	movl   $0x2b,0x8(%esp)
+ 684:	00 
+ 685:	c7 44 24 04 69 00 00 	movl   $0x69,0x4(%esp)
+ 68c:	00 
+ 68d:	c7 04 24 e0 01 00 00 	movl   $0x1e0,(%esp)
+ 694:	e8 fc ff ff ff       	call   695 <proceed+0x85>
+ 699:	c7 44 24 08 34 00 00 	movl   $0x34,0x8(%esp)
+ 6a0:	00 
+ 6a1:	c7 44 24 04 8c 00 00 	movl   $0x8c,0x4(%esp)
+ 6a8:	00 
+ 6a9:	c7 04 24 d2 00 00 00 	movl   $0xd2,(%esp)
+ 6b0:	e8 fc ff ff ff       	call   6b1 <proceed+0xa1>
+ 6b5:	c7 44 24 08 00 00 00 	movl   $0x0,0x8(%esp)
+ 6bc:	00 
+ 6bd:	c7 44 24 04 a5 00 00 	movl   $0xa5,0x4(%esp)
+ 6c4:	00 
+ 6c5:	c7 04 24 d2 00 00 00 	movl   $0xd2,(%esp)
+ 6cc:	e8 fc ff ff ff       	call   6cd <proceed+0xbd>
+ 6d1:	c7 44 24 08 20 00 00 	movl   $0x20,0x8(%esp)
+ 6d8:	00 
+ 6d9:	c7 44 24 04 be 00 00 	movl   $0xbe,0x4(%esp)
+ 6e0:	00 
+ 6e1:	c7 04 24 d2 00 00 00 	movl   $0xd2,(%esp)
+ 6e8:	e8 fc ff ff ff       	call   6e9 <proceed+0xd9>
+ 6ed:	c7 44 24 08 34 00 00 	movl   $0x34,0x8(%esp)
+ 6f4:	00 
+ 6f5:	c7 44 24 04 d7 00 00 	movl   $0xd7,0x4(%esp)
+ 6fc:	00 
+ 6fd:	c7 04 24 d2 00 00 00 	movl   $0xd2,(%esp)
+ 704:	e8 fc ff ff ff       	call   705 <proceed+0xf5>
+ 709:	c7 44 24 08 52 00 00 	movl   $0x52,0x8(%esp)
+ 710:	00 
+ 711:	c7 44 24 04 09 01 00 	movl   $0x109,0x4(%esp)
+ 718:	00 
+ 719:	c7 04 24 d2 00 00 00 	movl   $0xd2,(%esp)
+ 720:	e8 fc ff ff ff       	call   721 <proceed+0x111>
+ 725:	c7 44 24 08 60 00 00 	movl   $0x60,0x8(%esp)
+ 72c:	00 
+ 72d:	c7 44 24 04 ec 02 00 	movl   $0x2ec,0x4(%esp)
+ 734:	00 
+ 735:	c7 04 24 c0 03 00 00 	movl   $0x3c0,(%esp)
+ 73c:	e8 fc ff ff ff       	call   73d <proceed+0x12d>
+ 741:	c7 04 24 66 00 00 00 	movl   $0x66,(%esp)
+ 748:	e8 fc ff ff ff       	call   749 <proceed+0x139>
+ 74d:	e8 fc ff ff ff       	call   74e <proceed+0x13e>
+ 752:	83 c4 3c             	add    $0x3c,%esp
+ 755:	e9 fc ff ff ff       	jmp    756 <proceed+0x146>
