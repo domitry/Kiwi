@@ -1,0 +1,81 @@
+
+Allocating common symbols
+Common symbol       size              file
+
+rect                0x10              graphicApp.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+                0x00200000                . = 0x200000
+
+.text           0x00200000      0x211
+                0x00200000                _text_start = .
+ *(.text)
+ .text          0x00200000       0x1b term.o
+                0x00200000                appMain
+ *fill*         0x0020001b        0x5 
+ .text          0x00200020      0x1f1 graphicApp.o
+                0x00200020                drawRect
+                0x002000c0                fill
+                0x00200110                tellBuffer
+                0x00200150                mmap
+                0x00200170                umemset
+                0x002001a0                initWindow
+                0x00200211                _text_end = .
+
+.rodata         0x00200211        0x0
+                0x00200211                _rodata_start = .
+ *(.rodata)
+                0x00200211                _rodata_end = .
+
+.eh_frame       0x00200214      0x12c
+ .eh_frame      0x00200214       0x2c term.o
+ .eh_frame      0x00200240      0x100 graphicApp.o
+
+.data           0x00200340        0x0
+                0x00200340                _data_start = .
+ *(.data)
+ .data          0x00200340        0x0 term.o
+ .data          0x00200340        0x0 graphicApp.o
+                0x00200340                _data_end = .
+
+.bss            0x00200340       0x14
+                0x00200340                _bss_start = .
+ *(.bss)
+ .bss           0x00200340        0x0 term.o
+ .bss           0x00200340        0x4 graphicApp.o
+                0x00200344                _bss_end = .
+ COMMON         0x00200344       0x10 graphicApp.o
+                0x00200344                rect
+LOAD term.o
+LOAD graphicApp.o
+OUTPUT(term.app binary)
+
+.comment        0x00000000       0x24
+ .comment       0x00000000       0x12 term.o
+ .comment       0x00000012       0x12 graphicApp.o
+
+.note.GNU-stack
+                0x00000000        0x0
+ .note.GNU-stack
+                0x00000000        0x0 term.o
+ .note.GNU-stack
+                0x00000000        0x0 graphicApp.o
+
+Cross Reference Table
+
+Symbol                                            File
+appMain                                           term.o
+drawRect                                          graphicApp.o
+fill                                              graphicApp.o
+initWindow                                        graphicApp.o
+                                                  term.o
+mmap                                              graphicApp.o
+rect                                              graphicApp.o
+tellBuffer                                        graphicApp.o
+umemset                                           graphicApp.o

@@ -1,0 +1,459 @@
+Archive member included because of file (symbol)
+
+./libgolibc.a(sprintf.o)      wsys.o (sprintf)
+./libgolibc.a(vsprintf.o)     ./libgolibc.a(sprintf.o) (vsprintf)
+./libgolibc.a(strtoul0.o)     ./libgolibc.a(vsprintf.o) (strtoul0)
+
+Allocating common symbols
+Common symbol       size              file
+
+str                 0xa               graphic.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+                0xc0104020                . = 0xc0104020
+
+.text           0xc0104020     0x2e04
+                0xc0104020                _text_start = .
+ *(.text)
+ .text          0xc0104020       0x83 krnl.o
+                0xc0104020                kmain
+ *fill*         0xc01040a3        0xd 
+ .text          0xc01040b0      0x55d phys_mem.o
+                0xc01040b0                kmemset
+                0xc01040e0                ksetPDE
+                0xc0104110                usetPDE
+                0xc0104140                ksearchEmptyPage
+                0xc01041d0                kmmap
+                0xc0104260                ummap
+                0xc01042f0                kmmap_phys
+                0xc01043d0                kmalloc
+                0xc01043f0                kmemcpy
+                0xc0104490                checkMemMapInfo
+                0xc0104580                initVirMem
+                0xc0104590                initMemMap
+ *fill*         0xc010460d        0x3 
+ .text          0xc0104610        0x0 section.o
+ .text          0xc0104610      0x6b0 graphic.o
+                0xc0104610                initGraphic
+                0xc0104690                getGraphInfo
+                0xc01046c0                fill
+                0xc0104710                loadImage
+                0xc01047a0                loadImage256
+                0xc0104870                drawRect
+                0xc0104950                drawImage
+                0xc01049e0                drawImage2
+                0xc0104ba0                drawImageTrans
+ .text          0xc0104cc0      0x3da fs.o
+                0xc0104cc0                initFs
+                0xc0104ce0                strlen
+                0xc0104d10                searchFile
+                0xc0104e00                getNextCluster
+                0xc0104e80                loadFile
+                0xc0104fb0                loadFileToMem
+ *fill*         0xc010509a        0x6 
+ .text          0xc01050a0      0x3b2 font.o
+                0xc01050a0                max
+                0xc01050b0                strcmp
+                0xc0105120                strcpy
+                0xc0105160                loadFont
+                0xc0105230                drawFont
+                0xc0105330                drawString
+ *fill*         0xc0105452        0xe 
+ .text          0xc0105460      0x492 interp.o
+                0xc0105460                interpPageFault
+                0xc0105490                addBuffer
+                0xc01054d0                popBuffer
+                0xc0105520                interpSoftware
+                0xc0105570                setInterpHandler
+                0xc01055b0                setTrapHandler
+                0xc01055f0                initPIC
+                0xc01056f0                initInterp
+ *fill*         0xc01058f2        0xe 
+ .text          0xc0105900       0x81 nasmfunc.o
+                0xc0105900                _io_in8
+                0xc010590b                _io_out8
+                0xc0105915                _load_idtr
+                0xc0105925                _keyIntHandler
+                0xc010593c                _mouseIntHandler
+                0xc0105953                _timerIntHandler
+                0xc010596a                _softwareIntHandler
+ *fill*         0xc0105981        0xf 
+ .text          0xc0105990      0x838 wsys.o
+                0xc0105990                setLayer
+                0xc01059d0                setContext
+                0xc01059f0                newWindow
+                0xc0105a30                switchLayer
+                0xc0105a40                moveLayer
+                0xc0105a50                moveCursor
+                0xc0105ad0                drawCursor
+                0xc0105b20                drawBack
+                0xc0105be0                drawWindow
+                0xc0105d90                updateContext
+                0xc0105dd0                initWsys
+                0xc0105ee0                drawAlert
+                0xc0105f90                proceed
+ *fill*         0xc01061c8        0x8 
+ .text          0xc01061d0      0x123 task.o
+                0xc01061d0                saveRegisters
+                0xc0106220                registerTask
+                0xc0106230                exec
+                0xc0106270                searchNextTask
+                0xc0106280                switchTask
+ *fill*         0xc01062f3        0xd 
+ .text          0xc0106300      0x20f mouse.o
+                0xc0106300                initMouse
+                0xc0106370                interpMouse
+                0xc01063c0                pushMBuffer
+                0xc01063e0                decodeMouseData
+                0xc01064b0                checkMouse
+ *fill*         0xc010650f        0x1 
+ .text          0xc0106510       0xc2 keyboard.o
+                0xc0106510                checkIfKeyReady
+                0xc0106530                initKeyboard
+                0xc0106590                interpKeyboard
+                0xc01065d0                checkKeyboard
+ *fill*         0xc01065d2        0xe 
+ .text          0xc01065e0       0xa2 pit.o
+                0xc01065e0                initTimer
+                0xc0106630                interpTimer
+                0xc0106680                checkTimer
+ *fill*         0xc0106682        0xe 
+ .text          0xc0106690      0x181 rtc.o
+                0xc0106690                getRTCRegister
+                0xc01066c0                getCurrentTime
+ *fill*         0xc0106811        0xf 
+ .text          0xc0106820       0x23 ./libgolibc.a(sprintf.o)
+                0xc0106820                sprintf
+ *fill*         0xc0106843        0xd 
+ .text          0xc0106850      0x435 ./libgolibc.a(vsprintf.o)
+                0xc0106850                vsprintf
+ *fill*         0xc0106c85        0xb 
+ .text          0xc0106c90      0x194 ./libgolibc.a(strtoul0.o)
+                0xc0106c90                strtoul0
+                0xc0106e24                _text_end = .
+
+.rodata         0xc0106e24        0x0
+                0xc0106e24                _rodata_start = .
+ *(.rodata)
+                0xc0106e24                _rodata_end = .
+
+.rodata.str1.1  0xc0106e24       0x8f
+ .rodata.str1.1
+                0xc0106e24       0x11 krnl.o
+ .rodata.str1.1
+                0xc0106e35        0x5 font.o
+ .rodata.str1.1
+                0xc0106e3a       0x79 wsys.o
+
+.eh_frame       0xc0106eb4      0xca8
+ .eh_frame      0xc0106eb4       0x2c krnl.o
+ .eh_frame      0xc0106ee0      0x21c phys_mem.o
+ .eh_frame      0xc01070fc      0x1f0 graphic.o
+ .eh_frame      0xc01072ec      0x15c fs.o
+ .eh_frame      0xc0107448      0x14c font.o
+ .eh_frame      0xc0107594       0xe8 interp.o
+ .eh_frame      0xc010767c      0x194 wsys.o
+ .eh_frame      0xc0107810       0x80 task.o
+ .eh_frame      0xc0107890       0xd4 mouse.o
+ .eh_frame      0xc0107964       0x74 keyboard.o
+ .eh_frame      0xc01079d8       0x5c pit.o
+ .eh_frame      0xc0107a34       0x58 rtc.o
+ .eh_frame      0xc0107a8c       0x30 ./libgolibc.a(sprintf.o)
+ .eh_frame      0xc0107abc       0x50 ./libgolibc.a(vsprintf.o)
+ .eh_frame      0xc0107b0c       0x50 ./libgolibc.a(strtoul0.o)
+
+.rodata.cst4    0xc0107b5c        0x4
+ .rodata.cst4   0xc0107b5c        0x4 graphic.o
+
+.rodata.str1.4  0xc0107b60       0x44
+ .rodata.str1.4
+                0xc0107b60       0x44 wsys.o
+
+.data           0xc0107ba4       0x30
+                0xc0107ba4                _data_start = .
+ *(.data)
+ .data          0xc0107ba4        0x0 krnl.o
+ .data          0xc0107ba4        0x0 phys_mem.o
+ .data          0xc0107ba4       0x10 section.o
+                0xc0107ba4                BSS_END
+                0xc0107ba8                BSS_START
+                0xc0107bac                TEXT_END
+                0xc0107bb0                TEXT_START
+ .data          0xc0107bb4        0x0 graphic.o
+ .data          0xc0107bb4        0x0 fs.o
+ .data          0xc0107bb4        0x0 font.o
+ .data          0xc0107bb4        0x0 interp.o
+ .data          0xc0107bb4        0x0 wsys.o
+ .data          0xc0107bb4        0x0 task.o
+ .data          0xc0107bb4        0x0 mouse.o
+ .data          0xc0107bb4        0x0 keyboard.o
+ .data          0xc0107bb4        0x0 pit.o
+ .data          0xc0107bb4        0x0 rtc.o
+ .data          0xc0107bb4        0x0 ./libgolibc.a(sprintf.o)
+ .data          0xc0107bb4       0x20 ./libgolibc.a(vsprintf.o)
+ .data          0xc0107bd4        0x0 ./libgolibc.a(strtoul0.o)
+                0xc0107bd4                _data_end = .
+
+.bss            0xc0107be0      0xe5a
+                0xc0107be0                _bss_start = .
+ *(.bss)
+ .bss           0xc0107be0        0x8 krnl.o
+ .bss           0xc0107be8       0x18 phys_mem.o
+ .bss           0xc0107c00        0x0 section.o
+ .bss           0xc0107c00       0x10 graphic.o
+ .bss           0xc0107c10        0xc fs.o
+ *fill*         0xc0107c1c        0x4 
+ .bss           0xc0107c20       0x24 font.o
+ *fill*         0xc0107c44       0x1c 
+ .bss           0xc0107c60      0x800 interp.o
+ .bss           0xc0108460      0x24c wsys.o
+ *fill*         0xc01086ac       0x14 
+ .bss           0xc01086c0      0x134 task.o
+ *fill*         0xc01087f4        0xc 
+ .bss           0xc0108800      0x110 mouse.o
+ *fill*         0xc0108910       0x10 
+ .bss           0xc0108920      0x103 keyboard.o
+ *fill*         0xc0108a23        0x1 
+ .bss           0xc0108a24        0x4 pit.o
+ .bss           0xc0108a28        0x6 rtc.o
+ *fill*         0xc0108a2e        0x2 
+ .bss           0xc0108a30        0x0 ./libgolibc.a(sprintf.o)
+ .bss           0xc0108a30        0x0 ./libgolibc.a(vsprintf.o)
+ .bss           0xc0108a30        0x0 ./libgolibc.a(strtoul0.o)
+                0xc0108a30                _bss_end = .
+ COMMON         0xc0108a30        0xa graphic.o
+                0xc0108a30                str
+LOAD krnl.o
+LOAD phys_mem.o
+LOAD section.o
+LOAD graphic.o
+LOAD fs.o
+LOAD font.o
+LOAD interp.o
+LOAD nasmfunc.o
+LOAD wsys.o
+LOAD task.o
+LOAD mouse.o
+LOAD keyboard.o
+LOAD pit.o
+LOAD rtc.o
+LOAD ./libgolibc.a
+OUTPUT(kernel.bin binary)
+
+.comment        0x00000000       0xea
+ .comment       0x00000000       0x12 krnl.o
+ .comment       0x00000012       0x12 phys_mem.o
+ .comment       0x00000024       0x12 section.o
+ .comment       0x00000036       0x12 graphic.o
+ .comment       0x00000048       0x12 fs.o
+ .comment       0x0000005a       0x12 font.o
+ .comment       0x0000006c       0x12 interp.o
+ .comment       0x0000007e       0x12 wsys.o
+ .comment       0x00000090       0x12 task.o
+ .comment       0x000000a2       0x12 mouse.o
+ .comment       0x000000b4       0x12 keyboard.o
+ .comment       0x000000c6       0x12 pit.o
+ .comment       0x000000d8       0x12 rtc.o
+
+.note.GNU-stack
+                0x00000000        0x0
+ .note.GNU-stack
+                0x00000000        0x0 krnl.o
+ .note.GNU-stack
+                0x00000000        0x0 phys_mem.o
+ .note.GNU-stack
+                0x00000000        0x0 section.o
+ .note.GNU-stack
+                0x00000000        0x0 graphic.o
+ .note.GNU-stack
+                0x00000000        0x0 fs.o
+ .note.GNU-stack
+                0x00000000        0x0 font.o
+ .note.GNU-stack
+                0x00000000        0x0 interp.o
+ .note.GNU-stack
+                0x00000000        0x0 wsys.o
+ .note.GNU-stack
+                0x00000000        0x0 task.o
+ .note.GNU-stack
+                0x00000000        0x0 mouse.o
+ .note.GNU-stack
+                0x00000000        0x0 keyboard.o
+ .note.GNU-stack
+                0x00000000        0x0 pit.o
+ .note.GNU-stack
+                0x00000000        0x0 rtc.o
+ .note.GNU-stack
+                0x00000000        0x0 ./libgolibc.a(sprintf.o)
+ .note.GNU-stack
+                0x00000000        0x0 ./libgolibc.a(vsprintf.o)
+ .note.GNU-stack
+                0x00000000        0x0 ./libgolibc.a(strtoul0.o)
+
+Cross Reference Table
+
+Symbol                                            File
+BSS_END                                           section.o
+                                                  phys_mem.o
+                                                  krnl.o
+BSS_START                                         section.o
+                                                  krnl.o
+TEXT_END                                          section.o
+TEXT_START                                        section.o
+_bss_end                                          section.o
+_bss_start                                        section.o
+_io_in8                                           nasmfunc.o
+                                                  rtc.o
+                                                  keyboard.o
+                                                  mouse.o
+_io_out8                                          nasmfunc.o
+                                                  rtc.o
+                                                  pit.o
+                                                  keyboard.o
+                                                  mouse.o
+                                                  interp.o
+_keyIntHandler                                    nasmfunc.o
+                                                  interp.o
+_load_idtr                                        nasmfunc.o
+                                                  interp.o
+_mouseIntHandler                                  nasmfunc.o
+                                                  interp.o
+_softwareIntHandler                               nasmfunc.o
+                                                  interp.o
+_text_end                                         section.o
+_text_start                                       section.o
+_timerIntHandler                                  nasmfunc.o
+                                                  interp.o
+addBuffer                                         interp.o
+                                                  keyboard.o
+                                                  mouse.o
+checkIfKeyReady                                   keyboard.o
+                                                  mouse.o
+checkKeyboard                                     keyboard.o
+checkMemMapInfo                                   phys_mem.o
+checkMouse                                        mouse.o
+                                                  wsys.o
+checkTimer                                        pit.o
+decodeMouseData                                   mouse.o
+drawAlert                                         wsys.o
+drawBack                                          wsys.o
+drawCursor                                        wsys.o
+drawFont                                          font.o
+drawImage                                         graphic.o
+                                                  wsys.o
+drawImage2                                        graphic.o
+                                                  font.o
+drawImageTrans                                    graphic.o
+                                                  wsys.o
+drawRect                                          graphic.o
+                                                  wsys.o
+drawString                                        font.o
+                                                  wsys.o
+drawWindow                                        wsys.o
+exec                                              task.o
+                                                  krnl.o
+fill                                              graphic.o
+                                                  interp.o
+getCurrentTime                                    rtc.o
+                                                  wsys.o
+getGraphInfo                                      graphic.o
+                                                  wsys.o
+getNextCluster                                    fs.o
+getRTCRegister                                    rtc.o
+initFs                                            fs.o
+                                                  krnl.o
+initGraphic                                       graphic.o
+                                                  krnl.o
+initInterp                                        interp.o
+                                                  krnl.o
+initKeyboard                                      keyboard.o
+                                                  interp.o
+initMemMap                                        phys_mem.o
+                                                  krnl.o
+initMouse                                         mouse.o
+                                                  interp.o
+initPIC                                           interp.o
+initTimer                                         pit.o
+                                                  interp.o
+initVirMem                                        phys_mem.o
+                                                  krnl.o
+initWsys                                          wsys.o
+                                                  krnl.o
+interpKeyboard                                    keyboard.o
+                                                  nasmfunc.o
+interpMouse                                       mouse.o
+                                                  nasmfunc.o
+interpPageFault                                   interp.o
+interpSoftware                                    interp.o
+                                                  nasmfunc.o
+interpTimer                                       pit.o
+                                                  nasmfunc.o
+kmain                                             krnl.o
+kmalloc                                           phys_mem.o
+                                                  font.o
+                                                  fs.o
+                                                  graphic.o
+kmemcpy                                           phys_mem.o
+                                                  fs.o
+                                                  graphic.o
+kmemset                                           phys_mem.o
+                                                  interp.o
+                                                  krnl.o
+kmmap                                             phys_mem.o
+kmmap_phys                                        phys_mem.o
+                                                  graphic.o
+ksearchEmptyPage                                  phys_mem.o
+ksetPDE                                           phys_mem.o
+loadFile                                          fs.o
+                                                  font.o
+                                                  graphic.o
+loadFileToMem                                     fs.o
+                                                  task.o
+loadFont                                          font.o
+                                                  krnl.o
+loadImage                                         graphic.o
+                                                  wsys.o
+loadImage256                                      graphic.o
+                                                  wsys.o
+max                                               font.o
+moveCursor                                        wsys.o
+moveLayer                                         wsys.o
+newWindow                                         wsys.o
+                                                  interp.o
+popBuffer                                         interp.o
+                                                  mouse.o
+proceed                                           wsys.o
+                                                  pit.o
+pushMBuffer                                       mouse.o
+registerTask                                      task.o
+saveRegisters                                     task.o
+searchFile                                        fs.o
+searchNextTask                                    task.o
+setContext                                        wsys.o
+setInterpHandler                                  interp.o
+setLayer                                          wsys.o
+setTrapHandler                                    interp.o
+sprintf                                           ./libgolibc.a(sprintf.o)
+                                                  wsys.o
+str                                               graphic.o
+strcmp                                            font.o
+strcpy                                            font.o
+strlen                                            fs.o
+                                                  ./libgolibc.a(vsprintf.o)
+strtoul0                                          ./libgolibc.a(strtoul0.o)
+                                                  ./libgolibc.a(vsprintf.o)
+switchLayer                                       wsys.o
+switchTask                                        task.o
+ummap                                             phys_mem.o
+                                                  task.o
+                                                  interp.o
+updateContext                                     wsys.o
+usetPDE                                           phys_mem.o
+vsprintf                                          ./libgolibc.a(vsprintf.o)
+                                                  ./libgolibc.a(sprintf.o)
