@@ -1,0 +1,23 @@
+Kiwi
+------------
+
+Kiwi is a secure and graphical OS.
+
+
+Features
+------------
+
+Kiwi is secure.
+ASLR and DEP are enabled.
+
+Kiwi have a graphical UI. 
+Users can walk between monitoring task view and desktop view smoothly.
+
+
+License
+------------
+
+Kiwi is released under the MIT license except files below.
+
+- kernel/src/int32.asm 
+(by Napalm, http://creativecommons.org/licenses/by-sa/2.0/uk/)
