@@ -52,7 +52,9 @@ int ksearchEmptyPage(){
 				if(mm.start[i+j]!=0)break;
 				if(j==MME_NUM_IN_2MB-1){
 					for(j=0;j<MME_NUM_IN_2MB;j++)mm.start[i+j]=0xffffffff;//物理メモリ確保
-					return i;
+					//__asm__ volatile("movl %0, %%eax"::"r"((int)i));
+					//for(;;)asm volatile("hlt");
+					return (i*128*1024);
 				}
 			}
 		}
@@ -60,7 +62,7 @@ int ksearchEmptyPage(){
 	return 0;
 }
 
-_Bool kmmap(void *start,int len){
+int kmmap(void *start,int len){
 	int i,num,add;
 	num = len/KER_PAGE_SIZE + (len%KER_PAGE_SIZE>0?1:0);
 	if((int)start % KER_PAGE_SIZE != 0)return 0;
@@ -68,7 +70,7 @@ _Bool kmmap(void *start,int len){
 		add = ksearchEmptyPage();	//物理メモリの検索、確保
 		ksetPDE(add,(int)start+KER_PAGE_SIZE*i);	//仮想アドレス空間にマップ
 	}
-	return 0;
+	return add;
 }
 
 _Bool ummap(void *start,int len){
@@ -95,9 +97,13 @@ _Bool kmmap_phys(void *phys_start,void *vir_start,int len){
 }
 
 void* kmalloc(UINT size){
-	int rest = 4-heap_last%4;
-	void *result = heap_last+rest;
+	int rest = 4-(int)heap_last%4;
+	void *result = (void *)((int)heap_last + (int)rest);
 	heap_last += rest + size;
+	
+	//if((int)heap_last/0x200000 - (int)result/0x200000 != 0)
+	//	kmmap((void *)(((int)result/0x200000)*0x200000),0x200000);
+	
 	return result;
 }
 
@@ -116,11 +122,11 @@ void kmemcpy(void *dst,void *src,UINT size){
 	for(i=0;i<(size-rest)%4;i++){	//末尾のアライメント調整
 		*((UCHAR *)(dst+rest+4*((size-rest)/4))+i)
 			 = *((UCHAR *)(src+rest+4*((size-rest)/4))+i);
-	}
+	} 
 }
 
 void checkMemMapInfo(){
-	MemMapInfo *mmi = (MemMapInfo *)MME_MEMO;
+	MemMapInfo *mmi = (MemMapInfo *)MME_MEMO;//これが間違い、MME_MEMOの指す先がMemMapInfo構造体
 	int start,end,i;
 	while(mmi->length>0){
 		if(mmi->type == OS_CAN_USE){
@@ -128,7 +134,7 @@ void checkMemMapInfo(){
 			end = start + (int)(mmi->length + mmi->base_add%PAGE_SIZE)/PAGE_SIZE
 				 - ((mmi->length + mmi->base_add%PAGE_SIZE)%PAGE_SIZE==0?0:1);
 			for(i=start;i<=end;i++){
-				setBit(i);
+				clearBit(i);
 			}
 		}
 		mmi++;
@@ -146,14 +152,19 @@ void initMemMap(){
 	//pde[0xc0000000/KER_PAGE_SIZE] = 0;
 	mm.start = (UINT*)(BSS_END + 1);//kernelの直後にmmapを入れる
 	mem_size = *((UINT *)MEM_SIZE_MEMO);
+	
 	mem_size = mem_size * 16 + 4 * 1024;	//4kb単位に変換
+	
 	mm.size = mem_size/8;					//4kb分の情報を1bitに押し込める(冗長ですが許して)
 	mm.entry_num = mm.size/4;				//intの配列にしたときの要素数
 	kmemset(mm.start,0xff,mm.size);			//全bitを1に
-	checkMemMapInfo();						//BIOSから取得した情報に基づき値をセット
+	//checkMemMapInfo();						//BIOSから取得した情報に基づき値をセット
+
+	for(i=(0x100000/PAGE_SIZE);i<(0xf00000/PAGE_SIZE);i++)clearBit(i);
+	for(i=(0x1000000/PAGE_SIZE);i<mem_size;i++)clearBit(i);
 	for(i=0;i<PAGE_SEARCH_START_BIT;i++)setBit(i);			//これまで使った領域を確保(20mb分)
 	
-	heap_last = (void *)mm.start + mm.size;
+	heap_last = (void *)((int)mm.start + (int)mm.size);
 
 	cnt = 0;
 }

@@ -10,14 +10,34 @@ char str[10];
 //for(;;)asm("hlt");
 
 void initGraphic(){
+	Color black = {0,0,0};
 	VbeInfo *vbe_info = (VbeInfo *)VBE_INFO;
 	v_info.start = (unsigned char*)VRAM_START_VIR;//vramはこのアドレスにマップされる
+
 	v_info.width = (int)vbe_info->width;
 	v_info.height = (int)vbe_info->height;
 	v_info.bit_per_pic = (char)vbe_info->bit_per_pic;
 	v_info.depth = v_info.bit_per_pic/8;
 	v_info.line = (char)vbe_info->bytes_per_line;
-	kmmap_phys((void *)(vbe_info->vram_add),(void *)VRAM_START_VIR,v_info.width*v_info.height*v_info.depth);//vramを仮想アドレス空間にマップ
+	
+	v_info.buffer[0] = v_info.start;
+	v_info.buffer[1] = v_info.start + v_info.width * v_info.depth * v_info.height;
+	
+	kmmap_phys((void *)(vbe_info->vram_add),(void *)VRAM_START_VIR,v_info.width*v_info.height*v_info.depth*2);//vramを仮想アドレス空間にマップ
+	
+	fill(black);
+}
+
+void exchangeBuffer(){
+	//biosのvbeファンクションを呼び出してスキャンラインをずらす
+	regs16_t regs={0};
+	regs.ax = 0x4f07;
+	regs.bx = 0x0000;
+	regs.ecx = 0x0;
+	regs.edx = (v_info.start == v_info.buffer[0]?0:v_info.height);
+	int32(0x10,&regs);
+	//書き込み位置をずらす
+	v_info.start = v_info.buffer[(v_info.start == v_info.buffer[0]?1:0)];
 }
 
 VramInfo getGraphInfo(){
@@ -146,6 +166,36 @@ void drawImage2(UCHAR *image,int x,int y,int width,int height,UCHAR mode){
 		w_seek += v_info.width * v_info.depth;
 	}
 }
+
+void drawImage2App(UCHAR *buffer,UCHAR *image,int x,int y,int width,int height,int f_width,UCHAR mode){
+	UCHAR *w_seek,*r_seek,*end;
+	int i;
+	float alpha;
+	r_seek = image;
+	w_seek = buffer + (y*f_width + x)*v_info.depth;
+	end = v_info.start + ((y+height)*f_width + x)*v_info.depth ;
+	
+	while(w_seek < end){
+		switch(mode){
+			case IMG_RGBA:
+				for(i=0;i<width;i++){
+					alpha = (float)r_seek[3]/255;
+					w_seek[i*3] = (1-alpha)*w_seek[i*3]+alpha*r_seek[0];
+					w_seek[i*3+1] = (1-alpha)*w_seek[i*3+1]+alpha*r_seek[1];
+					w_seek[i*3+2] = (1-alpha)*w_seek[i*3+2]+alpha*r_seek[2];
+					r_seek += 4;
+				}
+				break;
+			case IMG_RGB:
+				kmemcpy(w_seek,r_seek,width * v_info.depth);
+				r_seek += width * v_info.depth;
+				break;
+		}
+		w_seek += f_width * v_info.depth;
+	}
+}
+
+
 
 void drawImageTrans(UCHAR *image,int x,int y,int width,int height,Color trans){
 	int i;

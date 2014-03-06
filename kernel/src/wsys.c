@@ -7,6 +7,9 @@
 static WsysInfo wsys;
 static Time cur_time;
 static char time_str[6];
+InterpBuffer *key,*mouse;
+void* buffer_addr_k = (void *)(VRAM_START_VIR + 0x400000*2);
+
 
 void setLayer(int num,int x,int y,int width,int height,UCHAR type){
 	if(num<0)return;
@@ -23,9 +26,13 @@ void setContext(int num,void *context){
 }
 
 // newWindowシステムコール時に呼ばれる
-void newWindow(UCHAR *buffer,int width,int height){
+void registerBuffer(UCHAR *buffer_u,int width,int height){
+	void *buffer_phys = (void *)kmmap(buffer_u,0x200000);
+	//for(;;)asm volatile("hlt"::"a"(buffer_phys));
+	kmmap_phys(buffer_phys,(void *)buffer_addr_k,0x200000);
+	
 	setLayer(1,100,200,width,height,3);	//layer生成
-	setContext(1,buffer);				//コンテキストの設定
+	setContext(1,buffer_phys);				//コンテキストの設定
 }
 
 void switchLayer(){
@@ -76,14 +83,25 @@ void drawWindow(Rect rec){
 	drawRect(rec.x,rec.y+WIN_BAR_HEIGHT-WIN_EDGE-2,WIN_EDGE,rec.height-WIN_BAR_HEIGHT+WIN_EDGE+2,black);//左
 	drawRect(rec.x+rec.width-WIN_EDGE,rec.y+WIN_BAR_HEIGHT-WIN_EDGE-2,WIN_EDGE,rec.height-WIN_BAR_HEIGHT+WIN_EDGE+2,black);//右
 	drawRect(rec.x,rec.y+rec.height-WIN_EDGE,rec.width,WIN_EDGE,black);//下
-	drawRect(rec.x+WIN_EDGE,rec.y+WIN_BAR_HEIGHT,rec.width-WIN_EDGE*2,rec.height-WIN_BAR_HEIGHT-WIN_EDGE,grey);
+	//drawRect(rec.x+WIN_EDGE,rec.y+WIN_BAR_HEIGHT,rec.width-WIN_EDGE*2,rec.height-WIN_BAR_HEIGHT-WIN_EDGE,grey);
+}
+
+void blueScreen(){
+	Color blue = {17,114,169};
+	Color white = {255,255,255};
+	
+	fill(blue);
+	drawString(500,370,":(",white);
+	drawString(500,430,"Your PC ran into a problem that it could'nt",white);
+	drawString(500,450," handle, and now it needs to restart.",white);
+	return;
 }
 
 void updateContext(){
 	Rect win={wsys.layers[1].x,wsys.layers[1].y,wsys.layers[1].width,wsys.layers[1].height};
 	if(wsys.layers[1].is_context_exist){
+		drawImage(buffer_addr_k,wsys.layers[1].x,wsys.layers[1].y,wsys.layers[1].width,wsys.layers[1].height);
 		drawWindow(win);
-		//drawImage(wsys.layers[1].context,wsys.layers[1].x,wsys.layers[1].y,wsys.layers[1].width,wsys.layers[1].height);
 	}
 }
 
@@ -113,24 +131,17 @@ void drawAlert(const char* message){
 
 void proceed(){
 	Rect all={0,0,wsys.layers[BACK_NUM].width,wsys.layers[BACK_NUM].height};
-	Rect win={200,100,700,400};
-	Color white = {255,255,255};
-	Color green = {0,200,0};
-
+	
 	drawBack(all);
-	drawWindow(win);
-	drawString(480,105,"terminal",white);
-	//updateContext();
-	drawString(210,140,"<<<<<<<<<<<<<<<>>>>>>>>>>>>>>",white);
-	drawString(210,165,"<<<<<<  kiwi ver0.01     >>>>>>>",white);
-	drawString(210,190,"<<<<<< (c)2013 domitry  >>>>>>>",white);
-	drawString(210,215,"<<<<<<<<<<<<<<<>>>>>>>>>>>>>>",white);
-	drawString(210,265,"kiwi-domitry>",green);
+
+	updateContext();
+
 	cur_time = getCurrentTime();
 	sprintf(time_str,"%d:%2d",cur_time.hour,cur_time.minute);
-	drawString(960,748,time_str,white);
-	drawAlert("This is an alert!");
+	//drawAlert("This is an alert!");
 	
 	moveCursor();
 	drawCursor();
+	
+	exchangeBuffer();
 }

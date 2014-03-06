@@ -8,11 +8,14 @@
 #include "task.h"
 #include <stdio.h>
 
+
 static InterpBuffer *key,*mouse;
 
 int kmain(void){
 	
 	kmemset((void *)BSS_START,0x00,BSS_END-BSS_START);
+	asm volatile("mov %0,%%esp"::"r"(0xc1400000));
+	
 	initVirMem();
 	initMemMap();
 	initGraphic();
@@ -22,7 +25,7 @@ int kmain(void){
 	
 	initInterp(&key,&mouse);
 	initWsys(key,mouse);
-
+	
 	exec("term.app");
 	
 	for(;;){

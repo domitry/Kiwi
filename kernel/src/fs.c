@@ -19,7 +19,9 @@ DirLayout* searchFile(char *filename){
 	int i,j;
 	char name[12];
 	DirLayout *seek = (DirLayout *)fat12_info.root_add;
+	
 	if(strlen(filename)>12)return 0;	//ロングネーム非対応
+	
 	//比較しやすいようにファイル名を大文字に、拡張子のドットを削除(Font.sys->FONTSYS)
 	for(i=0,j=0;i<13;i++,j++){
 		if(filename[i]=='.'){
@@ -33,6 +35,7 @@ DirLayout* searchFile(char *filename){
 		if('a'<=filename[i])name[j]=filename[i]-('a'-'A');
 		else name[j]=filename[i];
 	}
+
 	while(seek < (DirLayout *)fat12_info.data_add){
 		for(i=0,j=0;j<11;i++,j++){
 			if(seek->file_name[j]==0x20){//space
@@ -40,7 +43,7 @@ DirLayout* searchFile(char *filename){
 				continue;
 			}
 			if(seek->file_name[j] != name[i])break;
-			if(j==10)return seek;
+			if(i==strlen(filename)-2)return seek;
 		}
 		seek++;
 	}
@@ -76,6 +79,7 @@ void* loadFile(char *filename){
 	int cl_num = dir->head_cluster;
 	int limit = dir->size / CLUSTER_SIZE + (dir->size % CLUSTER_SIZE==0?0:1);
 	int cnt=1;
+	
 	if(start == 0)return 0;//mallocできなかった
 
 	while(cl_num != 0xfff){
@@ -86,11 +90,21 @@ void* loadFile(char *filename){
 			kmemcpy(seek,getClusterAdd(cl_num),dir->size%CLUSTER_SIZE);
 			break;
 		}
+		
 		kmemcpy(seek,getClusterAdd(cl_num),CLUSTER_SIZE);
+		
 		cl_num = getNextCluster(cl_num);
 		seek += CLUSTER_SIZE;
+		
 		cnt++;
 	}
+/*
+	if(filename[0]=='l' && filename[1]=='i'){
+		asm volatile("cli");
+		asm volatile("mov %0,%%eax"::"r"((int)dir):"eax");
+		for(;;)asm volatile("hlt");
+	}
+*/	
 	return start;
 }
 

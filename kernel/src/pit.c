@@ -8,9 +8,9 @@ void initTimer(){
 	_io_out8(0x40,0x9c);//ÉJÉEÉìÉ^0
 	_io_out8(0x40,0x2e);//2e9cä‘äu
 }
-
+ 
 void interpTimer(){
-	timer.cnt++; 
+	timer.cnt++;
 	if((timer.cnt % INTERVAL_GRAPH)==0)proceed();
 	if((timer.cnt % INTERVAL_SYSCALL)==0);
 	_io_out8(PIC0_COMMUND_STATUS,0x60);//äÑÇËçûÇ›äÆóπ

@@ -5,6 +5,7 @@
 #include "wsys.h"
 
 static GateDescripter interp_desc[GATE_SIZE];
+extern void *buffer_addr_k;
 
 
 void addBuffer(UCHAR data,InterpBuffer *buffer){
@@ -24,23 +25,25 @@ UCHAR popBuffer(InterpBuffer *buffer){
 }
 
 void interpPageFault(){
-	Color blue = {0,0,255};
-	fill(blue);
-	for(;;){asm("hlt");}
+	int addr;
+	//asm volatile("mov %%cr2,%0":"=a"(addr));
+	//for(;;)asm volatile("hlt");
+	//blueScreen();
+	kmmap((void *)((addr/0x200000)*0x200000),0x200000);
 }
 
 void interpSoftware(int tmp,int edi,int esi,int ebp,int esp,int ebx,int edx,int ecx,int eax){
 	switch(eax){
-		case 0:
+		case 0://BlueScreen
+			blueScreen();
 			break;
-		case 1:
+		case 1://registerBuffer
+			registerBuffer(esi,ecx,edx);
 			break;
 		case 2:
 			break;
-		case 3://newWindowシステムコール(task.c)
-			//asm volatile("mov %0,%%eax"::"r"(edx));
-			//for(;;)asm("hlt");
-			newWindow(ebx,ecx,edx);
+		case 3:
+			//drawStringApp(buffer_addr_k,esi,ecx,500,edx,edi);
 			break;
 		case 4://mmap
 			ummap((void *)ebx,ecx);
@@ -102,7 +105,6 @@ void initInterp(InterpBuffer **k_key,InterpBuffer **k_mouse){
 	setInterpHandler(0x30,_softwareIntHandler);
 	
 	initPIC();
-	asm("sti");
 	
 	initKeyboard();
 	initMouse();
